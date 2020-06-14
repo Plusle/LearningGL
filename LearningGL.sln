@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LearningGL", "LearningGL\LearningGL.vcxproj", "{C6ACE9B7-98EF-4871-A0A8-48D28848D9BC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C6ACE9B7-98EF-4871-A0A8-48D28848D9BC}.Debug|x64.ActiveCfg = Debug|x64
+		{C6ACE9B7-98EF-4871-A0A8-48D28848D9BC}.Debug|x64.Build.0 = Debug|x64
+		{C6ACE9B7-98EF-4871-A0A8-48D28848D9BC}.Debug|x86.ActiveCfg = Debug|Win32
+		{C6ACE9B7-98EF-4871-A0A8-48D28848D9BC}.Debug|x86.Build.0 = Debug|Win32
+		{C6ACE9B7-98EF-4871-A0A8-48D28848D9BC}.Release|x64.ActiveCfg = Release|x64
+		{C6ACE9B7-98EF-4871-A0A8-48D28848D9BC}.Release|x64.Build.0 = Release|x64
+		{C6ACE9B7-98EF-4871-A0A8-48D28848D9BC}.Release|x86.ActiveCfg = Release|Win32
+		{C6ACE9B7-98EF-4871-A0A8-48D28848D9BC}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {992F68F3-0D6F-44AC-8A5B-C54FD4E5D335}
+	EndGlobalSection
+EndGlobal
