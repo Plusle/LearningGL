@@ -1,8 +1,11 @@
 #version 460 core
 
 in vec4 vertexColor;
+int vec2 textureCoord;
 out vec4 fragmentColor;
 
+uniform sampler2D myTexture;
+
 void main() {
-	fragmentColor = vertexColor;
+	fragmentColor = texture(myTexture, textureCoord);
 }

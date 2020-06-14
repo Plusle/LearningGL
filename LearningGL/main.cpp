@@ -1,9 +1,15 @@
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+
 
 #include "Shader.h"
 
 #include <iostream>
+
+
 
 // framebuffer size callback function
 //---------------------------------------------------------------
@@ -67,11 +73,12 @@ int main(int argc, char** argv) {
 	// a triangle with interpolated color
 	//---------------------------------------------------------------
 	GLfloat vertices[] = {
-	//  x      y      z         r     g     b     a
-		 0.5f, -0.5f, 0.0f,		1.0f, 0.0f, 0.0f, 1.0f,
-		-0.5f, -0.5f, 0.0f,		0.0f, 1.0f, 0.0f, 1.0f,
-		 0.0f,  0.5f, 0.0f,		0.0f, 0.0f, 1.0f, 0.0f
+	//  x      y      z         r     g     b     a			texture
+		 0.5f, -0.5f, 0.0f,		1.0f, 0.0f, 0.0f, 1.0f,		1.0f, 0.0f,
+		-0.5f, -0.5f, 0.0f,		0.0f, 1.0f, 0.0f, 1.0f,		0.0f, 0.0f,
+		 0.0f,  0.5f, 0.0f,		0.0f, 0.0f, 1.0f, 0.0f,		0.5f, 1.0f
 	};
+
 
 	// vertex buffer and attirbute array
 	//---------------------------------------------------------------
@@ -89,6 +96,26 @@ int main(int argc, char** argv) {
 	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 7, (void*)(sizeof(GLfloat) * 3));
 	glEnableVertexAttribArray(1);
 
+	GLuint texture;
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	GLint width, height, nrChannels;
+	unsigned char* data = stbi_load("wall.jpg", &width, &height, &nrChannels, 0);
+	if (data) {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	} else {
+		std::cout << "Failed to load texture." << std::endl;
+	}
+	stbi_image_free(data);
+
+
+
+
 	// shader program initializing
 	//---------------------------------------------------------------
 	Shader myProgram("vertex.gls", "fragment.gls");
@@ -101,6 +128,7 @@ int main(int argc, char** argv) {
 		glClearColor(0.3f, 0.2f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
+		glBindTexture(GL_TEXTURE_2D, texture);
 		glBindVertexArray(VAO);
 		myProgram.use();
 		glDrawArrays(GL_TRIANGLES, 0, 3);
