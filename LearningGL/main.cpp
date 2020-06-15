@@ -74,64 +74,97 @@ int main(int argc, char** argv) {
 	//---------------------------------------------------------------
 	GLfloat vertices[] = {
 	//  x      y      z         r     g     b     a			texture
-		 0.5f, -0.5f, 0.0f,		1.0f, 0.0f, 0.0f, 1.0f,		1.0f, 0.0f,
-		-0.5f, -0.5f, 0.0f,		0.0f, 1.0f, 0.0f, 1.0f,		0.0f, 0.0f,
-		 0.0f,  0.5f, 0.0f,		0.0f, 0.0f, 1.0f, 0.0f,		0.5f, 1.0f
+		-0.5f, -0.5f, 0.0f,		1.0f, 0.0f, 0.0f, 1.0f,		0.0f, 0.0f,
+		-0.5f,  0.5f, 0.0f,		0.0f, 1.0f, 0.0f, 1.0f,		0.0f, 1.0f,
+		 0.5f,  0.5f, 0.0f,		0.0f, 0.0f, 1.0f, 1.0f,		1.0f, 1.0f, 
+		 0.5f, -0.5f, 0.0f,		0.0f, 0.0f, 0.0f, 1.0f,		1.0f, 0.0f
 	};
 
+	// draw indices
+	GLuint indices[] = {
+		0, 1, 2, 
+		2, 3, 0
+	};
 
 	// vertex buffer and attirbute array
 	//---------------------------------------------------------------
-	GLuint VAO, VBO;
+	GLuint VAO, VBO, EBO;
 	glGenBuffers(1, &VBO);
 	glGenVertexArrays(1, &VAO);
+	glGenBuffers(1, &EBO);
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 	
 	// first attribute is vertex postion
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 7, (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 9, (void*)0);
 	glEnableVertexAttribArray(0);
 	// the second is rgba-value
-	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 7, (void*)(sizeof(GLfloat) * 3));
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 9, (void*)(sizeof(GLfloat) * 3));
 	glEnableVertexAttribArray(1);
+	// texture coord
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 9, (void*)(sizeof(GLfloat) * 7));
+	glEnableVertexAttribArray(2);
 
-	GLuint texture;
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
+	GLuint tex_Background, tex_Face;
+	glGenTextures(1, &tex_Background);
+	glBindTexture(GL_TEXTURE_2D, tex_Background);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	stbi_set_flip_vertically_on_load(true);
 	GLint width, height, nrChannels;
-	unsigned char* data = stbi_load("wall.jpg", &width, &height, &nrChannels, 0);
-	if (data) {
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+	unsigned char* data1 = stbi_load("container.jpg", &width, &height, &nrChannels, 0);
+	if (data1) {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data1);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	} else {
-		std::cout << "Failed to load texture." << std::endl;
+		std::cout << "Failed to load background." << std::endl;
 	}
-	stbi_image_free(data);
+	stbi_image_free(data1);
 
-
-
+	glGenTextures(1, &tex_Face);
+	glBindTexture(GL_TEXTURE_2D, tex_Face);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	unsigned char* data2 = stbi_load("awesomeface.png", &width, &height, &nrChannels, 0);
+	if (data2) {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data2);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else {
+		std::cout << "Failed to load face." << std::endl;
+	}
+	stbi_image_free(data2);
 
 	// shader program initializing
 	//---------------------------------------------------------------
 	Shader myProgram("vertex.gls", "fragment.gls");
+	myProgram.use();
+	myProgram.setInt("background", 0);
+	myProgram.setInt("face", 1);
 
 	// main loop
 	//---------------------------------------------------------------
 	while (!glfwWindowShouldClose(window)) {
 		process_input(window);
 
-		glClearColor(0.3f, 0.2f, 0.1f, 1.0f);
+		glClearColor(0.0f, 0.1f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		glBindTexture(GL_TEXTURE_2D, texture);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, tex_Background);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, tex_Face);
+
 		glBindVertexArray(VAO);
 		myProgram.use();
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

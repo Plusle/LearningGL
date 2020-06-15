@@ -72,8 +72,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>F:\000-code-gl\LearningGL\LearningGL\includes;$(IncludePath)</IncludePath>
-    <LibraryPath>F:\000-code-gl\LearningGL\LearningGL\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)LearningGL\includes;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)LearningGL\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>

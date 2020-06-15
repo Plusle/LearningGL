@@ -124,7 +124,7 @@ class Shader {
 				glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
 				if (!success) {
 					glGetShaderInfoLog(shader, 512, NULL, infolog);
-					std::cout << "Faild to compile " << type << "due to:\n" << infolog << std::endl;
+					std::cout << "Faild to compile " << type << " due to:\n" << infolog << std::endl;
 				}
 			} else {
 				glGetProgramiv(shader, GL_LINK_STATUS, &success);
