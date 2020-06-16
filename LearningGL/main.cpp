@@ -70,11 +70,11 @@ int main(int argc, char** argv) {
 	// a triangle with interpolated color
 	//---------------------------------------------------------------
 	GLfloat vertices[] = {
-	//  x      y      z         r     g     b     a			texture
-		-0.5f, -0.5f, 0.0f,		1.0f, 0.0f, 0.0f, 1.0f,		0.0f, 0.0f,
-		-0.5f,  0.5f, 0.0f,		0.0f, 1.0f, 0.0f, 1.0f,		0.0f, 1.0f,
-		 0.5f,  0.5f, 0.0f,		0.0f, 0.0f, 1.0f, 1.0f,		1.0f, 1.0f, 
-		 0.5f, -0.5f, 0.0f,		0.0f, 0.0f, 0.0f, 1.0f,		1.0f, 0.0f
+		//  x      y      z         r     g     b     a			texture
+		-0.5f, -0.5f, 0.0f,		1.0f, 0.0f, 0.0f, 1.0f,	    -1.0f, -1.0f,
+		-0.5f,  0.5f, 0.0f,		0.0f, 1.0f, 0.0f, 1.0f,		 2.0f, -1.0f,
+ 		 0.5f,  0.5f, 0.0f,		0.0f, 0.0f, 1.0f, 1.0f,		 2.0f,  2.0f,
+ 	 	 0.5f, -0.5f, 0.0f,		0.0f, 0.0f, 0.0f, 1.0f,		-1.0f,  2.0f
 	};
 
 	// draw indices
@@ -116,10 +116,11 @@ int main(int argc, char** argv) {
 	// the texture var is established ralationship with parameters and texture data
 	// generate first texture: the background 'container', it's a rgb pic with file format of jpg, NO transparency
 	glGenTextures(1, &tex_Background);
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, tex_Background);
 
 	// warp setting
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	
 	// mipmap setting
