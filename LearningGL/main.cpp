@@ -4,6 +4,10 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 #include "Shader.h"
 
 #include <iostream>
@@ -70,11 +74,11 @@ int main(int argc, char** argv) {
 	// a triangle with interpolated color
 	//---------------------------------------------------------------
 	GLfloat vertices[] = {
-		//  x      y      z         r     g     b     a			texture
-		-0.5f, -0.5f, 0.0f,		1.0f, 0.0f, 0.0f, 1.0f,	    -1.0f, -1.0f,
-		-0.5f,  0.5f, 0.0f,		0.0f, 1.0f, 0.0f, 1.0f,		 2.0f, -1.0f,
- 		 0.5f,  0.5f, 0.0f,		0.0f, 0.0f, 1.0f, 1.0f,		 2.0f,  2.0f,
- 	 	 0.5f, -0.5f, 0.0f,		0.0f, 0.0f, 0.0f, 1.0f,		-1.0f,  2.0f
+		//  x      y      z      texture
+		-0.5f, -0.5f, 0.0f,		 0.0f,  0.0f,
+		-0.5f,  0.5f, 0.0f,		 1.0f,  0.0f,
+ 		 0.5f,  0.5f, 0.0f,		 1.0f,  1.0f,
+ 	 	 0.5f, -0.5f, 0.0f,		 0.0f,  1.0f
 	};
 
 	// draw indices
@@ -100,18 +104,15 @@ int main(int argc, char** argv) {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 	
 	// first attribute is vertex postion
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 9, (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 5, (void*)0);
 	glEnableVertexAttribArray(0);
-	// the second is rgba-value
-	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 9, (void*)(sizeof(GLfloat) * 3));
-	glEnableVertexAttribArray(1);
 	// texture coord
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 9, (void*)(sizeof(GLfloat) * 7));
-	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 5, (void*)(sizeof(GLfloat) * 3));
+	glEnableVertexAttribArray(1);
 
 	// create textures
 	//---------------------------------------------------------------
-	GLuint tex_Background, tex_Face;
+	GLuint tex_Background;
 	
 	// the texture var is established ralationship with parameters and texture data
 	// generate first texture: the background 'container', it's a rgb pic with file format of jpg, NO transparency
@@ -155,7 +156,8 @@ int main(int argc, char** argv) {
 	//myProgram.use();
 	//myProgram.setInt("background", 0);			
 
-
+	
+	
 	// main loop
 	//---------------------------------------------------------------
 	while (!glfwWindowShouldClose(window)) {
@@ -164,13 +166,18 @@ int main(int argc, char** argv) {
 		glClearColor(0.0f, 0.1f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		// the implicit feature can make us omit the following statment.
-		glActiveTexture(GL_TEXTURE0);
-
+		//some graphics cards' feature can make us omit the following statment.
+		//glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, tex_Background);
 
 		glBindVertexArray(VAO);
 		myProgram.use();
+
+		glm::mat4 trans = glm::mat4(1.0f);
+		trans = glm::translate(trans, glm::vec3(0.5f, 0.5f, 0.0f));
+		trans = glm::rotate(trans, glm::radians(20.0f), glm::vec3(0.0, 0.0, 1.0));
+		myProgram.setMat4("transform", trans);
+
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		glfwSwapBuffers(window);
@@ -183,7 +190,6 @@ int main(int argc, char** argv) {
 	glDeleteBuffers(1, &VAO);
 	glDeleteBuffers(1, &VBO);
 	glDeleteTextures(1, &tex_Background);
-	glDeleteTextures(1, &tex_Face);
 
 	glfwTerminate();
 	return 0;

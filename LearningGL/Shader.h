@@ -94,7 +94,7 @@ class Shader {
 			glUniform2f(glGetUniformLocation(ID, u), v1, v2);
 		}
 
-		void setVec2(const char* u, const glm::vec2 &v) {
+		void setVec2(const char* u, const glm::vec2 &v) const {
 			glUniform2fv(glGetUniformLocation(ID, u), 1, &v[0]);
 		}
 
@@ -102,7 +102,7 @@ class Shader {
 			glUniform3f(glGetUniformLocation(ID, u), v1, v2, v3);
 		}
 
-		void setVec3(const char* u, const glm::vec3 &v) {
+		void setVec3(const char* u, const glm::vec3 &v) const {
 			glUniform3fv(glGetUniformLocation(ID, u), 1, &v[0]);
 		}
 
@@ -110,9 +110,22 @@ class Shader {
 			glUniform4f(glGetUniformLocation(ID, u), v1, v2, v3, v4);
 		}
 
-		void setVec4(const char* u, const glm::vec4 &v) {
+		void setVec4(const char* u, const glm::vec4 &v) const {
 			glUniform4fv(glGetUniformLocation(ID, u), 1, &v[0]);
 		}
+
+		void setMat2(const char* u, const glm::mat2 &m) const {
+			glUniformMatrix2fv(glGetUniformLocation(ID, u), 1, GL_FALSE, &m[0][0]);
+		}
+
+		void setMat3(const char* u, const glm::mat3 &m) const {
+			glUniformMatrix3fv(glGetUniformLocation(ID, u), 1, GL_FALSE, &m[0][0]);
+		}
+
+		void setMat4(const char* u, const glm::mat4 &m) const {
+			glUniformMatrix4fv(glGetUniformLocation(ID, u), 1, GL_FALSE, &m[0][0]);
+		}
+
 
 	private:
 
