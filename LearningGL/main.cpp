@@ -17,6 +17,16 @@
 void framebuffer_size_callback(GLFWwindow* w, int width, int height) {
 	glViewport(0, 0, width, height);
 }
+//
+void alpha_by_arrow(GLFWwindow* w, GLfloat& mix_ratio) {
+	if (glfwGetKey(w, GLFW_KEY_W) == GLFW_PRESS)
+		if (mix_ratio < 0.9f)
+			mix_ratio = mix_ratio + 0.01f;
+	if (glfwGetKey(w, GLFW_KEY_S) == GLFW_PRESS)
+		if (mix_ratio > 0.1f)
+			mix_ratio -= 0.01f;
+}
+
 // hit escape to close window
 //---------------------------------------------------------------
 void process_input(GLFWwindow* w) {
@@ -76,9 +86,9 @@ int main(int argc, char** argv) {
 	GLfloat vertices[] = {
 		//  x      y      z      texture
 		-0.5f, -0.5f, 0.0f,		 0.0f,  0.0f,
-		-0.5f,  0.5f, 0.0f,		 1.0f,  0.0f,
+		-0.5f,  0.5f, 0.0f,		 0.0f,  1.0f,
  		 0.5f,  0.5f, 0.0f,		 1.0f,  1.0f,
- 	 	 0.5f, -0.5f, 0.0f,		 0.0f,  1.0f
+ 	 	 0.5f, -0.5f, 0.0f,		 1.0f,  0.0f
 	};
 
 	// draw indices
@@ -121,7 +131,7 @@ int main(int argc, char** argv) {
 	glBindTexture(GL_TEXTURE_2D, tex_Background);
 
 	// warp setting
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	
 	// mipmap setting
@@ -148,13 +158,35 @@ int main(int argc, char** argv) {
 	// good practice free the memory immediately
 	stbi_image_free(data1);
 
+	GLuint tex_Face;
+
+	glGenTextures(1, &tex_Face);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, tex_Face);
+
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	unsigned char* data2 = stbi_load("awesomeface.png", &width, &height, &nrChannels, 0);
+	if (data2) {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data2);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	} else {
+		std::cout << "Failed to load face." << std::endl;
+	}
+	stbi_image_free(data2);
+
 	// shader program initializing
 	//---------------------------------------------------------------
 	Shader myProgram("vertex.gls", "fragment.gls");
 
 	// when only 1 sampler, some of graphics card can do this implicitly
-	//myProgram.use();
-	//myProgram.setInt("background", 0);			
+	myProgram.use();
+	myProgram.setInt("background", 0);
+	myProgram.setInt("face", 1);
 
 	
 	
@@ -167,18 +199,35 @@ int main(int argc, char** argv) {
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		//some graphics cards' feature can make us omit the following statment.
-		//glActiveTexture(GL_TEXTURE0);
+		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, tex_Background);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, tex_Face);
 
 		glBindVertexArray(VAO);
 		myProgram.use();
 
-		glm::mat4 trans = glm::mat4(1.0f);
-		trans = glm::translate(trans, glm::vec3(0.5f, 0.5f, 0.0f));
-		trans = glm::rotate(trans, glm::radians(20.0f), glm::vec3(0.0, 0.0, 1.0));
-		myProgram.setMat4("transform", trans);
+		static GLfloat mix_ratio = 0.2f;
+		alpha_by_arrow(window, mix_ratio);
+		myProgram.setFloat("mix_ratio", mix_ratio);
+		std::cout << mix_ratio << std::endl;
 
+		glm::mat4 trans = glm::mat4(1.0f);
+		//trans = glm::translate(trans, glm::vec3(0.5f, 0.5f, 0.0f));
+		//trans = glm::rotate(trans, (GLfloat)glfwGetTime() * glm::radians(20.0f), glm::vec3(0.0, 0.0, 1.0));
+		myProgram.setMat4("transform", trans);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+		glm::mat4 transform = glm::mat4(1.0f); // reset it to identity matrix
+		transform = glm::translate(transform, glm::vec3(-0.5f, 0.5f, 0.0f));
+		float scaleAmount = abs(sin(glfwGetTime()));
+		transform = glm::scale(transform, glm::vec3(scaleAmount, scaleAmount, scaleAmount));
+		//glUniformMatrix4fv(transformLoc, 1, GL_FALSE, &transform[0][0]);
+		myProgram.setMat4("transform", transform);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+
+
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
