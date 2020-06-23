@@ -114,18 +114,17 @@ class Shader {
 			glUniform4fv(glGetUniformLocation(ID, u), 1, &v[0]);
 		}
 
-		void setMat2(const char* u, const glm::mat2 &m) const {
-			glUniformMatrix2fv(glGetUniformLocation(ID, u), 1, GL_FALSE, &m[0][0]);
+		void setMat2(const std::string& name, const glm::mat2& v) const {
+			glUniformMatrix2fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, &v[0][0]);
 		}
 
-		void setMat3(const char* u, const glm::mat3 &m) const {
-			glUniformMatrix3fv(glGetUniformLocation(ID, u), 1, GL_FALSE, &m[0][0]);
+		void setMat3(const std::string& name, const glm::mat3& v) const {
+			glUniformMatrix3fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, &v[0][0]);
 		}
 
-		void setMat4(const char* u, const glm::mat4 &m) const {
-			glUniformMatrix4fv(glGetUniformLocation(ID, u), 1, GL_FALSE, &m[0][0]);
+		void setMat4(const std::string& name, const glm::mat4& v) const {
+			glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, &v[0][0]);
 		}
-
 
 	private:
 

@@ -149,6 +149,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FPSCamera.h" />
     <ClInclude Include="Shader.h" />
   </ItemGroup>
   <ItemGroup>

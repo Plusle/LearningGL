@@ -1,7 +1,6 @@
 #version 460 core
 
 out vec4 fragmentColor;
-in vec4 vertexColor;
 in vec2 textureCoord;
 
 uniform sampler2D background;
@@ -9,9 +8,5 @@ uniform sampler2D face;
 uniform float mix_ratio = 0.2;
 
 void main() {
-	fragmentColor = mix(texture(background, textureCoord), 
-					    texture(face, vec2(-textureCoord.x, textureCoord.y)), 
-						mix_ratio);
-
-	//fragmentColor = texture(background, textureCoord);
+	fragmentColor = mix(texture(background, textureCoord), texture(face, textureCoord), 0.2);
 }
