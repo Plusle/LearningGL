@@ -29,10 +29,16 @@
     <None Include="style.md">
       <Filter>源文件</Filter>
     </None>
-    <None Include="fragment.gls">
+    <None Include="light.vert">
       <Filter>源文件\shader</Filter>
     </None>
-    <None Include="vertex.gls">
+    <None Include="light.frag">
+      <Filter>源文件\shader</Filter>
+    </None>
+    <None Include="entity.vert">
+      <Filter>源文件\shader</Filter>
+    </None>
+    <None Include="entity.frag">
       <Filter>源文件\shader</Filter>
     </None>
   </ItemGroup>

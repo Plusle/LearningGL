@@ -60,9 +60,9 @@ class FPSCamera {
 		void walk(movement m, GLdouble deltaTime) {
 			GLfloat cameraSpeed = SPEED * deltaTime;
 			if (m == CAMERA_MOVE_FORWARD)
-				this->position += cameraSpeed * glm::normalize(glm::vec3(this->direction.x, 0.0f, this->direction.z));
+				this->position += cameraSpeed * glm::normalize(direction);
 			if (m == CAMERA_MOVE_BACKWARD)
-				this->position -= cameraSpeed * glm::normalize(glm::vec3(this->direction.x, 0.0f, this->direction.z));
+				this->position -= cameraSpeed * glm::normalize(direction);
 			if (m == CAMERA_MOVE_LEFT)
 				this->position -= cameraSpeed * glm::normalize(glm::cross(this->direction, this->up));
 			if (m == CAMERA_MOVE_RIGHT)
@@ -85,6 +85,10 @@ class FPSCamera {
 
 		inline glm::mat4 getView() {
 			return this->view;
+		}
+
+		inline glm::vec3 getPosition() {
+			return this->position;
 		}
 
 		// setter here

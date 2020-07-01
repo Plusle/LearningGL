@@ -73,152 +73,85 @@ int main(int argc, char** argv) {
 	// a box with face
 	//---------------------------------------------------------------
 	float vertices[] = {
-		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-		 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+	 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+	 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+	 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+	-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
 
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+	 0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+	 0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+	 0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+	-0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+	-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
 
-		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+	-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+	-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+	-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+	-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+	-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
 
-		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+	 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+	 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+	 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
 
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+	 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+	 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+	 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+	-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
 
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
-	};
-
-	glm::vec3 vertricesPosition[] = {
-		glm::vec3(0.0f,  0.0f,  0.0f),
-		glm::vec3(2.0f,  5.0f, -15.0f),
-		glm::vec3(-1.5f, -2.2f, -2.5f),
-		glm::vec3(-3.8f, -2.0f, -12.3f),
-		glm::vec3(2.4f, -0.4f, -3.5f),
-		glm::vec3(-1.7f,  3.0f, -7.5f),
-		glm::vec3(1.3f, -2.0f, -2.5f),
-		glm::vec3(1.5f,  2.0f, -2.5f),
-		glm::vec3(1.5f,  0.2f, -1.5f),
-		glm::vec3(-1.3f,  1.0f, -1.5f)
+	-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+	 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+	 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+	 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+	-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+	-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
 	};
 
 
 	// vertex buffer and attirbute array
 	//---------------------------------------------------------------
-	GLuint VAO, VBO;
+	GLuint entity_array, vertex_buffer;
 	//GLuint EBO;
-	glGenBuffers(1, &VBO);
-	glGenVertexArrays(1, &VAO);
+	glGenBuffers(1, &vertex_buffer);
+	glGenVertexArrays(1, &entity_array);
 	//glGenBuffers(1, &EBO);
-	glBindVertexArray(VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBindVertexArray(entity_array);
+	glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
 	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	// first attribute is vertex postion
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 5, (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 6, (void*)0);
 	glEnableVertexAttribArray(0);
-
-	// texture coord
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 5, (void*)(sizeof(GLfloat) * 3));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 6, (void*)(sizeof(GLfloat) * 3));
 	glEnableVertexAttribArray(1);
 
-	// create textures
-	//---------------------------------------------------------------
-	GLuint tex_Background;
-	
-	// the texture var is established ralationship with parameters and texture data
-	// generate first texture: the background 'container', it's a rgb pic with file format of jpg, NO transparency
-	glGenTextures(1, &tex_Background);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, tex_Background);
-
-	// warp setting
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	
-	// mipmap setting
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	
-	// flip the image because the origin in left bottom but image's in left top
-	stbi_set_flip_vertically_on_load(true);
-
-	// convert image into byte array
-	GLint width, height, nrChannels;
-	unsigned char* data1 = stbi_load("container.jpg", &width, &height, &nrChannels, 0);
-	if (data1) {
-		//target: 2D, mipmap level: 0 for set manually, pic format, width, height, legacy burden 0 eternally, format, datatype, data
-		// note that the first GL_RGB is int while the latter is GLenum (for what?)
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data1);
-		
-		// set mipmap automatically otherwise do it manually
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else {
-		std::cout << "Failed to load background." << std::endl;
-	}
-
-	// good practice free the memory immediately
-	stbi_image_free(data1);
-
-	GLuint tex_Face;
-
-	glGenTextures(1, &tex_Face);
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, tex_Face);
-
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	unsigned char* data2 = stbi_load("awesomeface.png", &width, &height, &nrChannels, 0);
-	if (data2) {
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data2);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	} else {
-		std::cout << "Failed to load face." << std::endl;
-	}
-	stbi_image_free(data2);
+	GLuint light_array;
+	glGenVertexArrays(1, &light_array);
+	glBindVertexArray(light_array);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 6, (void*)0);
+	glEnableVertexAttribArray(0);
 
 	// shader program initializing
 	//---------------------------------------------------------------
-	Shader myProgram("vertex.gls", "fragment.gls");
-
+	Shader entity_shader("entity.vert", "entity.frag");
+	Shader light_shader("light.vert", "light.frag");
 	// when only 1 sampler, some of graphics card can do this implicitly
-	myProgram.use();
-	myProgram.setInt("background", 0);
-	myProgram.setInt("face", 1);
+
+	entity_shader.use();
+	entity_shader.setVec3("entity_color", glm::vec3(1.0f, 0.5f, 0.31f));
+	entity_shader.setVec3("light_color", glm::vec3(1.0f));
+
 
 	
 	
@@ -228,34 +161,34 @@ int main(int argc, char** argv) {
 		process_input(window);
 
 		glEnable(GL_DEPTH_TEST);
-		glClearColor(0.0f, 0.1f, 0.3f, 1.0f);
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		//some graphics cards' feature can make us omit the following statment.
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, tex_Background);
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, tex_Face);
+		glBindVertexArray(entity_array);
 
-		glBindVertexArray(VAO);
-		myProgram.use();
-		
+		entity_shader.use();
+		entity_shader.setVec3("entity_color", glm::vec3(1.0f, 0.5f, 0.31f));
+		entity_shader.setVec3("light_color", glm::vec3(1.0f));
+		entity_shader.setVec3("light_position", glm::vec3(1.2f, 1.0f, 2.0f));
+		entity_shader.setVec3("view_position", camera.getPosition());
+
+		glm::mat4 model_entity = glm::mat4(1.0f);
 		glm::mat4 projection = glm::perspective(glm::radians(camera.getFOV()), (GLfloat)SCR_WIDTH / (GLfloat)SCR_HEIGHT, 0.1f, 100.0f);
+		entity_shader.setMat4("model", model_entity);
+		entity_shader.setMat4("view", camera.getView());
+		entity_shader.setMat4("projection", projection);
+		entity_shader.setVec3("light_color", glm::vec3(1.0f));
+		entity_shader.setVec3("entity_color", glm::vec3(1.0f, 0.5f, 0.31f));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
 
-		// bind view and projection matrix
-		myProgram.setMat4("view", camera.getView());
-		myProgram.setMat4("projection", projection);
 
-		// for every box, translate it to its position
-		for (size_t iter = 0; iter <= 10; ++iter) {
-			glm::mat4 model = glm::translate(glm::mat4(1.0f), vertricesPosition[iter]);
-			GLfloat angle = 20.0f * iter;
-			model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-			model = glm::rotate(model, (float)glfwGetTime() * glm::radians(45.0f), glm::vec3(0.5f, 1.0f, 0.0f));
-			myProgram.setMat4("model", model);
-			glDrawArrays(GL_TRIANGLES, 0, 36);
-		}
-
+		glBindVertexArray(light_array);
+		light_shader.use();
+		glm::mat4 model_light = glm::translate(glm::mat4(1.0f), glm::vec3(1.2f, 1.0f, 2.0f));
+		model_light = glm::scale(model_light, glm::vec3(0.2f));
+		light_shader.setMat4("model", model_light);
+		light_shader.setMat4("view", camera.getView());
+		light_shader.setMat4("projection", projection);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
 		glfwSwapBuffers(window);
@@ -264,10 +197,11 @@ int main(int argc, char** argv) {
 
 	// waste disposal
 	//---------------------------------------------------------------
-	myProgram.kill();
-	glDeleteBuffers(1, &VAO);
-	glDeleteBuffers(1, &VBO);
-	glDeleteTextures(1, &tex_Background);
+	//myProgram.kill();
+	
+	glDeleteVertexArrays(1, &entity_array);
+	glDeleteVertexArrays(1, &light_array);
+	glDeleteBuffers(1, &vertex_buffer);
 
 	glfwTerminate();
 	return 0;
@@ -285,16 +219,16 @@ void mouse_callback(GLFWwindow* w, double xpos, double ypos) {
 	std::cout << "x,y: " << xpos << " " << ypos << std::endl;
 
 	if (firstTimeFocus) {
-		lastX = xpos;
-		lastY = ypos;
+		lastX = (GLfloat)xpos;
+		lastY = (GLfloat)ypos;
 		firstTimeFocus = false;
 	}
 
 	// offset = new pos - old pos
 	GLfloat xoffset = (float)(xpos - lastX);
 	GLfloat yoffset = -(float)(ypos - lastY);	// notice that the origin of screen is on the left top, so if move up, ypos decreases.
-	lastX = xpos;
-	lastY = ypos;
+	lastX = (GLfloat)xpos;
+	lastY = (GLfloat)ypos;
 	
 	camera.rotate(xoffset, yoffset);
 }

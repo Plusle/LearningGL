@@ -50,13 +50,13 @@ class Shader {
 			vShader = glCreateShader(GL_VERTEX_SHADER);
 			glShaderSource(vShader, 1, &vShaderCode, NULL);
 			glCompileShader(vShader);
-			CheckShaderStatus(vShader, "vertex shader");
+			CheckShaderStatus(vShader, "vertex shader", vertexPath);
 
 			// fragment shader
 			fShader = glCreateShader(GL_FRAGMENT_SHADER);
 			glShaderSource(fShader, 1, &fShaderCode, NULL);
 			glCompileShader(fShader);
-			CheckShaderStatus(fShader, "fragment shader");
+			CheckShaderStatus(fShader, "fragment shader", fragmentPath);
 
 			// link program
 			ID = glCreateProgram();
@@ -128,7 +128,7 @@ class Shader {
 
 	private:
 
-		void CheckShaderStatus(GLuint shader, const char* type) {
+		void CheckShaderStatus(GLuint shader, const char* type, const char* path = nullptr) {
 			GLint success;
 			GLchar infolog[512];
 
@@ -136,7 +136,7 @@ class Shader {
 				glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
 				if (!success) {
 					glGetShaderInfoLog(shader, 512, NULL, infolog);
-					std::cout << "Faild to compile " << type << " due to:\n" << infolog << std::endl;
+					std::cout << "Faild to compile " << path << " due to:\n" << infolog << std::endl;
 				}
 			} else {
 				glGetProgramiv(shader, GL_LINK_STATUS, &success);
