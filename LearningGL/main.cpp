@@ -166,10 +166,16 @@ int main(int argc, char** argv) {
 
 		glBindVertexArray(entity_array);
 
+		GLfloat current_time = glfwGetTime();
+		glm::vec3 light_location;
+		light_location.x = 2.6f * cos(current_time);
+		light_location.y = 0.0f;
+		light_location.z = 1.4f * sin(current_time);
+
 		entity_shader.use();
 		entity_shader.setVec3("entity_color", glm::vec3(1.0f, 0.5f, 0.31f));
 		entity_shader.setVec3("light_color", glm::vec3(1.0f));
-		entity_shader.setVec3("light_position", glm::vec3(1.2f, 1.0f, 2.0f));
+		entity_shader.setVec3("light_position", light_location);
 		entity_shader.setVec3("view_position", camera.getPosition());
 
 
@@ -184,7 +190,7 @@ int main(int argc, char** argv) {
 
 		glBindVertexArray(light_array);
 		light_shader.use();
-		glm::mat4 model_light = glm::translate(glm::mat4(1.0f), glm::vec3(1.2f, 1.0f, 2.0f));
+		glm::mat4 model_light = glm::translate(glm::mat4(1.0f), light_location);
 		model_light = glm::scale(model_light, glm::vec3(0.2f));
 		light_shader.setMat4("model", model_light);
 		light_shader.setMat4("view", camera.getView());
