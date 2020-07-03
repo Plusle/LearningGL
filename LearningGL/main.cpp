@@ -172,13 +172,13 @@ int main(int argc, char** argv) {
 		entity_shader.setVec3("light_position", glm::vec3(1.2f, 1.0f, 2.0f));
 		entity_shader.setVec3("view_position", camera.getPosition());
 
+
+
 		glm::mat4 model_entity = glm::mat4(1.0f);
 		glm::mat4 projection = glm::perspective(glm::radians(camera.getFOV()), (GLfloat)SCR_WIDTH / (GLfloat)SCR_HEIGHT, 0.1f, 100.0f);
 		entity_shader.setMat4("model", model_entity);
 		entity_shader.setMat4("view", camera.getView());
 		entity_shader.setMat4("projection", projection);
-		entity_shader.setVec3("light_color", glm::vec3(1.0f));
-		entity_shader.setVec3("entity_color", glm::vec3(1.0f, 0.5f, 0.31f));
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
 
@@ -216,7 +216,7 @@ void framebuffer_size_callback(GLFWwindow* w, int width, int height) {
 // mouse callback function
 //---------------------------------------------------------------
 void mouse_callback(GLFWwindow* w, double xpos, double ypos) {
-	std::cout << "x,y: " << xpos << " " << ypos << std::endl;
+	//std::cout << "x,y: " << xpos << " " << ypos << std::endl;
 
 	if (firstTimeFocus) {
 		lastX = (GLfloat)xpos;
