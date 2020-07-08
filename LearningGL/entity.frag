@@ -11,6 +11,10 @@ struct Light {
 	vec3 diffuse;
 	vec3 specular;
 	vec3 position;
+
+	float constant;
+	float linear;
+	float quadratic;
 	// here should be a so-called illumination decay rate, maybe
 	//float decay
 };
@@ -43,7 +47,13 @@ void main() {
 	float specular_coefficient = pow(max(dot(reflection, -view_direction), 0.0), surface.shininess);
 	vec3 specular = cube_light.specular * specular_coefficient * texture(surface.specular_map, coord).rgb;
 
+	// attenuation
+	float distans = length(cube_light.position - frag_position);
+	float attenuation = 1 / (cube_light.constant + distans * cube_light.linear + pow(distans, 2) * cube_light.quadratic);
+
 	// composite
-	vec3 color = ambient + diffuse + specular;
+	vec3 color = (ambient + diffuse + specular) * attenuation;
+
+
 	fragment_color = vec4(color, 1.0);	
 }

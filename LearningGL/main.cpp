@@ -117,6 +117,19 @@ int main(int argc, char** argv) {
 		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f
 	};
 
+	glm::vec3 cubePositions[] = {
+		glm::vec3(0.0f,  0.0f,  0.0f),
+		glm::vec3(2.0f,  5.0f, -15.0f),
+		glm::vec3(-1.5f, -2.2f, -2.5f),
+		glm::vec3(-3.8f, -2.0f, -12.3f),
+		glm::vec3(2.4f, -0.4f, -3.5f),
+		glm::vec3(-1.7f,  3.0f, -7.5f),
+		glm::vec3(1.3f, -2.0f, -2.5f),
+		glm::vec3(1.5f,  2.0f, -2.5f),
+		glm::vec3(1.5f,  0.2f, -1.5f),
+		glm::vec3(-1.3f,  1.0f, -1.5f)
+	};
+
 	// vertex buffer and attirbute array
 	//---------------------------------------------------------------
 	GLuint entity_array, vertex_buffer;
@@ -208,6 +221,13 @@ int main(int argc, char** argv) {
 		// camera
 		entity_shader.setVec3("view_position", camera.getPosition());
 		entity_shader.setVec3("cube_light.position", light_location);
+		//entity_shader.setVec3("cube_light.direction", -0.2f, -1.0f, -0.3f);
+
+		// attenuation
+		entity_shader.setFloat("cube_light.constant", 1.0f);
+		entity_shader.setFloat("cube_light.linear", 0.09f);
+		entity_shader.setFloat("cube_light.quadratic", 0.032f);
+
 		// material
 		entity_shader.setVec3("surface.specular", 0.5f, 0.5f, 0.5f);
 		entity_shader.setFloat("surface.shininess", 256.0f);
@@ -217,9 +237,9 @@ int main(int argc, char** argv) {
 		entity_shader.setVec3("cube_light.diffuse", 0.5f, 0.5f, 0.5f);
 		entity_shader.setVec3("cube_light.specular", 1.0f, 1.0f, 1.0f);
 
-		glm::mat4 model_entity = glm::mat4(1.0f);
+		
 		glm::mat4 projection = glm::perspective(glm::radians(camera.getFOV()), (GLfloat)SCR_WIDTH / (GLfloat)SCR_HEIGHT, 0.1f, 100.0f);
-		entity_shader.setMat4("model", model_entity);
+		
 		entity_shader.setMat4("view", camera.getView());
 		entity_shader.setMat4("projection", projection);
 
@@ -229,8 +249,14 @@ int main(int argc, char** argv) {
 		glBindTexture(GL_TEXTURE_2D, specular_map);
 		glBindVertexArray(entity_array);
 
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
+		for (size_t i = 0; i < 10; ++i) {
+			glm::mat4 model_entity = glm::mat4(1.0f);
+			model_entity = glm::translate(model_entity, cubePositions[i]);
+			float angle = 20.0f * i;
+			model_entity = glm::rotate(model_entity, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+			entity_shader.setMat4("model", model_entity);
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+		}
 
 		glBindVertexArray(light_array);
 		light_shader.use();
@@ -250,7 +276,7 @@ int main(int argc, char** argv) {
 	//myProgram.kill();
 	
 	glDeleteVertexArrays(1, &entity_array);
-	glDeleteVertexArrays(1, &light_array);
+	//glDeleteVertexArrays(1, &light_array);
 	glDeleteBuffers(1, &vertex_buffer);
 
 	glfwTerminate();
