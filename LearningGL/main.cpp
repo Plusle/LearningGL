@@ -166,19 +166,35 @@ int main(int argc, char** argv) {
 
 		glBindVertexArray(entity_array);
 
-		GLfloat current_time = glfwGetTime();
-		glm::vec3 light_location;
-		light_location.x = 2.6f * cos(current_time);
-		light_location.y = 0.0f;
-		light_location.z = 1.4f * sin(current_time);
+		//GLfloat current_time = glfwGetTime();
+		//glm::vec3 light_location;
+		//light_location.x = 2.6f * cos(current_time);
+		//light_location.y = 0.0f;
+		//light_location.z = 1.4f * sin(current_time);
+		glm::vec3 light_location = glm::vec3(1.0f, 1.0f, -3.1f);
 
 		entity_shader.use();
-		entity_shader.setVec3("entity_color", glm::vec3(1.0f, 0.5f, 0.31f));
-		entity_shader.setVec3("light_color", glm::vec3(1.0f));
-		entity_shader.setVec3("light_position", light_location);
 		entity_shader.setVec3("view_position", camera.getPosition());
+		// uniform surface emerald
+		entity_shader.setVec3("surface.ambient", 0.0215f, 0.1745f, 0.0215f);
+		entity_shader.setVec3("surface.diffuse", 0.07568f, 0.61424f, 0.07568f);
+		entity_shader.setVec3("surface.specualr", 0.633f, 0.727811f, 0.633);
+		entity_shader.setFloat("surface.shininess", 0.6f);
 
+		// cube_light
 
+		glm::vec3 light_color;
+		light_color.x = sin(glfwGetTime() * 2.0f);
+		light_color.y = sin(glfwGetTime() * 1.3f);
+		light_color.z = sin(glfwGetTime() * 0.5f);
+
+		glm::vec3 light_ambient = light_color * glm::vec3(0.5f);
+		glm::vec3 light_diffuse = light_color * glm::vec3(0.2f);
+
+		entity_shader.setVec3("cube_light.ambient", light_ambient);
+		entity_shader.setVec3("cube_light.diffuse", light_diffuse);
+		entity_shader.setVec3("cube_light.specualr", 1.0f, 1.0f, 1.0f);
+		entity_shader.setVec3("cube_light.position", light_location);
 
 		glm::mat4 model_entity = glm::mat4(1.0f);
 		glm::mat4 projection = glm::perspective(glm::radians(camera.getFOV()), (GLfloat)SCR_WIDTH / (GLfloat)SCR_HEIGHT, 0.1f, 100.0f);
