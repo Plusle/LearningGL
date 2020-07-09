@@ -18,6 +18,7 @@
 
 const GLuint SCR_WIDTH = 800;
 const GLuint SCR_HEIGHT = 600;
+const GLfloat PI = 3.14;
 
 GLfloat deltaTime = 0.0f;
 GLfloat lastFrame = 0.0f;
@@ -216,11 +217,14 @@ int main(int argc, char** argv) {
 
 
 
-		glm::vec3 light_location = glm::vec3(1.2f, 1.0f, 2.0f);
+		//glm::vec3 light_location = glm::vec3(1.2f, 1.0f, 2.0f);
 		entity_shader.use();
 		// camera
 		entity_shader.setVec3("view_position", camera.getPosition());
-		entity_shader.setVec3("cube_light.position", light_location);
+		entity_shader.setVec3("cube_light.position", camera.getPosition());
+		entity_shader.setVec3("cube_light.direction", camera.getDirection());
+		entity_shader.setFloat("cube_light.cutoff", glm::radians(10.0f));
+		entity_shader.setFloat("cube_light.decay", glm::radians(3.0f));
 		//entity_shader.setVec3("cube_light.direction", -0.2f, -1.0f, -0.3f);
 
 		// attenuation
@@ -258,14 +262,14 @@ int main(int argc, char** argv) {
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
 
-		glBindVertexArray(light_array);
-		light_shader.use();
-		glm::mat4 model_light = glm::translate(glm::mat4(1.0f), light_location);
-		model_light = glm::scale(model_light, glm::vec3(0.2f));
-		light_shader.setMat4("model", model_light);
-		light_shader.setMat4("view", camera.getView());
-		light_shader.setMat4("projection", projection);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
+		//glBindVertexArray(light_array);
+		//light_shader.use();
+		//glm::mat4 model_light = glm::translate(glm::mat4(1.0f), light_location);
+		//model_light = glm::scale(model_light, glm::vec3(0.2f));
+		//light_shader.setMat4("model", model_light);
+		//light_shader.setMat4("view", camera.getView());
+		//light_shader.setMat4("projection", projection);
+		//glDrawArrays(GL_TRIANGLES, 0, 36);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

@@ -91,6 +91,10 @@ class FPSCamera {
 			return this->position;
 		}
 
+		inline glm::vec3 getDirection() {
+			return this->direction;
+		}
+
 		// setter here
 		
 
