@@ -150,6 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FPSCamera.h" />
+    <ClInclude Include="Light.h" />
     <ClInclude Include="Shader.h" />
   </ItemGroup>
   <ItemGroup>

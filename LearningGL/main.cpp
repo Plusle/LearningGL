@@ -7,10 +7,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
 #include "Shader.h"
 #include "FPSCamera.h"
 
@@ -129,6 +125,13 @@ int main(int argc, char** argv) {
 		glm::vec3(1.5f,  2.0f, -2.5f),
 		glm::vec3(1.5f,  0.2f, -1.5f),
 		glm::vec3(-1.3f,  1.0f, -1.5f)
+	};
+
+	glm::vec3 PointLight[] = {
+		glm::vec3(0.0f, 0.0f, 3.0f),
+		glm::vec3(0.0f, 0.0f, -3.0f),
+		glm::vec3(3.0f, 0.0f, 0.0f),
+		glm::vec3(-3.0f, 0.0f, 0.0f)
 	};
 
 	// vertex buffer and attirbute array
@@ -274,7 +277,7 @@ int main(int argc, char** argv) {
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
-
+	
 	// waste disposal
 	//---------------------------------------------------------------
 	//myProgram.kill();
