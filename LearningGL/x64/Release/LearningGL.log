@@ -1,0 +1,28 @@
+﻿  main.cpp
+E:\code-gl\LearningGL\LearningGL\FPSCamera.h(61,24): warning C4244: 'initializing': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+E:\code-gl\LearningGL\LearningGL\FPSCamera.h(115,51): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+E:\code-gl\LearningGL\LearningGL\FPSCamera.h(116,23): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+E:\code-gl\LearningGL\LearningGL\FPSCamera.h(117,51): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+E:\code-gl\LearningGL\LearningGL\Mesh.h(82,25): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+E:\code-gl\LearningGL\LearningGL\Mesh.h(125,65): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+E:\code-gl\LearningGL\LearningGL\main.cpp(17,24): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
+E:\code-gl\LearningGL\LearningGL\main.cpp(74,20): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+E:\code-gl\LearningGL\LearningGL\main.cpp(147,23): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
+  Generating code
+  651 of 746 functions (87.3%) were compiled, the rest were copied from previous compilation.
+    244 functions were new in current compilation
+    11 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  LearningGL.vcxproj -> E:\code-gl\LearningGL\x64\Release\LearningGL.exe

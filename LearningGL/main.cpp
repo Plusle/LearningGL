@@ -1,5 +1,4 @@
 #define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -9,6 +8,7 @@
 
 #include "Shader.h"
 #include "FPSCamera.h"
+#include "Model.h"
 
 #include <iostream>
 
@@ -67,212 +67,30 @@ int main(int argc, char** argv) {
 		return -1;
 	}
 
-	// a box with face
-	//---------------------------------------------------------------
-	float vertices[] = {
-		// positions          // normals           // texture coords
-		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 0.0f,
-		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
-		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
+	Shader shader = Shader("model.vert", "model.frag");
 
-		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
-		 0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 0.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
+	Model nano = Model("nano/nanosuit.obj");
 
-		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-		-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+	glEnable(GL_DEPTH_TEST);
 
-		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
-		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-		 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-
-		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 1.0f,
-		 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
-		 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
-
-		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f,
-		 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 1.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f
-	};
-
-	glm::vec3 cubePositions[] = {
-		glm::vec3(0.0f,  0.0f,  0.0f),
-		glm::vec3(2.0f,  5.0f, -15.0f),
-		glm::vec3(-1.5f, -2.2f, -2.5f),
-		glm::vec3(-3.8f, -2.0f, -12.3f),
-		glm::vec3(2.4f, -0.4f, -3.5f),
-		glm::vec3(-1.7f,  3.0f, -7.5f),
-		glm::vec3(1.3f, -2.0f, -2.5f),
-		glm::vec3(1.5f,  2.0f, -2.5f),
-		glm::vec3(1.5f,  0.2f, -1.5f),
-		glm::vec3(-1.3f,  1.0f, -1.5f)
-	};
-
-	glm::vec3 PointLight[] = {
-		glm::vec3(0.0f, 0.0f, 3.0f),
-		glm::vec3(0.0f, 0.0f, -3.0f),
-		glm::vec3(3.0f, 0.0f, 0.0f),
-		glm::vec3(-3.0f, 0.0f, 0.0f)
-	};
-
-	// vertex buffer and attirbute array
-	//---------------------------------------------------------------
-	GLuint entity_array, vertex_buffer;
-	//GLuint EBO;
-	glGenBuffers(1, &vertex_buffer);
-	glGenVertexArrays(1, &entity_array);
-	//glGenBuffers(1, &EBO);
-	glBindVertexArray(entity_array);
-	glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-	// first attribute is vertex postion
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 8, (void*)0);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 8, (void*)(sizeof(GLfloat) * 3));
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 8, (void*)(sizeof(GLfloat) * 6));
-	glEnableVertexAttribArray(2);
-
-	GLuint light_array;
-	glGenVertexArrays(1, &light_array);
-	glBindVertexArray(light_array);
-	glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 8, (void*)0);
-	glEnableVertexAttribArray(0);
-
-	GLuint diffuse_map;
-	glGenTextures(1, &diffuse_map);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, diffuse_map);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	GLint width, height, nrChannels;
-	unsigned char* data = stbi_load("container2.png", &width, &height, &nrChannels, 0);
-	if (data) {
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	} else {
-		std::cout << "Can't load texture file." << std::endl;
-	}
-	STBI_FREE(data);
-
-	GLuint specular_map;
-	glGenTextures(1, &specular_map);
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, specular_map);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	data = stbi_load("container2_specular.png", &width, &height, &nrChannels, 0);
-	if (data) {
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-	} else {
-		std::cout << "Can't load normal map texture" << std::endl;
-	}
-
-	// shader program initializing
-	//---------------------------------------------------------------
-	Shader entity_shader("entity.vert", "entity.frag");
-	Shader light_shader("light.vert", "light.frag");
-	// when only 1 sampler, some of graphics card can do this implicitly
-
-	entity_shader.use();
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, diffuse_map);
-	entity_shader.setInt("surface.diffuse_map", 0);
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, specular_map);
-	entity_shader.setInt("surface.specular_map", 1);
-	
 	// main loop
 	//---------------------------------------------------------------
 	while (!glfwWindowShouldClose(window)) {
 		process_input(window);
 
-		glEnable(GL_DEPTH_TEST);
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		glm::mat4 model = glm::mat4(1.0f);
+		glm::mat4 projection = glm::perspective(camera.getFOV(), (float)(SCR_WIDTH / SCR_HEIGHT), 0.01f, 100.0f);
+		glm::mat4 view = camera.getView();
 
+		shader.use();
+		shader.setMat4("model", model);
+		shader.setMat4("view", view);
+		shader.setMat4("projection", projection);
+		nano.Draw(shader);
 
-		//glm::vec3 light_location = glm::vec3(1.2f, 1.0f, 2.0f);
-		entity_shader.use();
-		// camera
-		entity_shader.setVec3("view_position", camera.getPosition());
-		entity_shader.setVec3("cube_light.position", camera.getPosition());
-		entity_shader.setVec3("cube_light.direction", camera.getDirection());
-		entity_shader.setFloat("cube_light.cutoff", glm::radians(10.0f));
-		entity_shader.setFloat("cube_light.decay", glm::radians(3.0f));
-		//entity_shader.setVec3("cube_light.direction", -0.2f, -1.0f, -0.3f);
-
-		// attenuation
-		entity_shader.setFloat("cube_light.constant", 1.0f);
-		entity_shader.setFloat("cube_light.linear", 0.09f);
-		entity_shader.setFloat("cube_light.quadratic", 0.032f);
-
-		// material
-		entity_shader.setVec3("surface.specular", 0.5f, 0.5f, 0.5f);
-		entity_shader.setFloat("surface.shininess", 256.0f);
-
-		// cube_light
-		entity_shader.setVec3("cube_light.ambient", 0.2f, 0.2f, 0.2f);
-		entity_shader.setVec3("cube_light.diffuse", 0.5f, 0.5f, 0.5f);
-		entity_shader.setVec3("cube_light.specular", 1.0f, 1.0f, 1.0f);
-
-		
-		glm::mat4 projection = glm::perspective(glm::radians(camera.getFOV()), (GLfloat)SCR_WIDTH / (GLfloat)SCR_HEIGHT, 0.1f, 100.0f);
-		
-		entity_shader.setMat4("view", camera.getView());
-		entity_shader.setMat4("projection", projection);
-
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, diffuse_map);
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, specular_map);
-		glBindVertexArray(entity_array);
-
-		for (size_t i = 0; i < 10; ++i) {
-			glm::mat4 model_entity = glm::mat4(1.0f);
-			model_entity = glm::translate(model_entity, cubePositions[i]);
-			float angle = 20.0f * i;
-			model_entity = glm::rotate(model_entity, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-			entity_shader.setMat4("model", model_entity);
-			glDrawArrays(GL_TRIANGLES, 0, 36);
-		}
-
-		//glBindVertexArray(light_array);
-		//light_shader.use();
-		//glm::mat4 model_light = glm::translate(glm::mat4(1.0f), light_location);
-		//model_light = glm::scale(model_light, glm::vec3(0.2f));
-		//light_shader.setMat4("model", model_light);
-		//light_shader.setMat4("view", camera.getView());
-		//light_shader.setMat4("projection", projection);
-		//glDrawArrays(GL_TRIANGLES, 0, 36);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
@@ -280,11 +98,7 @@ int main(int argc, char** argv) {
 	
 	// waste disposal
 	//---------------------------------------------------------------
-	//myProgram.kill();
-	
-	glDeleteVertexArrays(1, &entity_array);
-	//glDeleteVertexArrays(1, &light_array);
-	glDeleteBuffers(1, &vertex_buffer);
+
 
 	glfwTerminate();
 	return 0;

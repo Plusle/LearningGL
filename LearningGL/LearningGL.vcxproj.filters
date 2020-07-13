@@ -29,16 +29,10 @@
     <None Include="style.md">
       <Filter>源文件</Filter>
     </None>
-    <None Include="light.vert">
+    <None Include="model.vert">
       <Filter>源文件\shader</Filter>
     </None>
-    <None Include="light.frag">
-      <Filter>源文件\shader</Filter>
-    </None>
-    <None Include="entity.vert">
-      <Filter>源文件\shader</Filter>
-    </None>
-    <None Include="entity.frag">
+    <None Include="model.frag">
       <Filter>源文件\shader</Filter>
     </None>
   </ItemGroup>
@@ -50,6 +44,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Light.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
