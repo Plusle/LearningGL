@@ -15,7 +15,6 @@ E:\code-gl\LearningGL\LearningGL\FPSCamera.h(117,51): warning C4244: '=': conver
           [
               T=float
           ]
-E:\code-gl\LearningGL\LearningGL\Mesh.h(101,65): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-E:\code-gl\LearningGL\LearningGL\main.cpp(17,24): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
-E:\code-gl\LearningGL\LearningGL\main.cpp(145,23): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
+E:\code-gl\LearningGL\LearningGL\main.cpp(18,24): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
+E:\code-gl\LearningGL\LearningGL\main.cpp(236,23): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
   LearningGL.vcxproj -> E:\code-gl\LearningGL\x64\Debug\LearningGL.exe
