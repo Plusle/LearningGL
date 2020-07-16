@@ -60,11 +60,11 @@ int main(int argc, char** argv) {
 
 	// no cursor window
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	glEnable(GL_DEPTH_TEST);
+
 
 	// load opengl function address
 	//---------------------------------------------------------------
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+	if (!gladLoadGL()) {
 		std::cout << "Failed to initialize GLAD" << std::endl;
 		return -1;
 	}
@@ -152,8 +152,9 @@ int main(int argc, char** argv) {
 
 	Shader shader("depth.vert", "depth.frag");
 	shader.use();
-	shader.setInt("texture", 0);
-
+	shader.setInt("texture0", 0);
+	
+	glEnable(GL_DEPTH_TEST);
 	// main loop
 	//---------------------------------------------------------------
 	while (!glfwWindowShouldClose(window)) {
@@ -167,17 +168,21 @@ int main(int argc, char** argv) {
 		glm::mat4 projection = glm::perspective(camera.getFOV(), (float)(SCR_WIDTH) / (float)(SCR_HEIGHT), 0.1f, 200.0f);
 
 		glm::mat4 model = glm::mat4(1.0f);
-		glm::mat4 cube1 = glm::translate(model, glm::vec3(1.0f, 0.0f, 3.0f));
+		glm::mat4 cube1 = model;  //glm::translate(model, glm::vec3(1.0f, 0.0f, 3.0f));
 		glm::mat4 cube2 = glm::translate(model, glm::vec3(2.0f, 0.0f, 1.0f));
 		
 		shader.setMat4("view", view);
 		shader.setMat4("projection", projection);
 
 		glBindVertexArray(floor_array);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, floor_texture);
 		shader.setMat4("model", model);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 
 		glBindVertexArray(cube_array);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, cube_texture);
 		shader.setMat4("model", cube1);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 		shader.setMat4("model", cube2);
