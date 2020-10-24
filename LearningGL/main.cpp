@@ -27,6 +27,9 @@ bool firstTimeFocus = true;
 
 FPSCamera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 
+void RenderOther(GLuint, GLuint, Shader);
+void RenderModel(GLuint, GLuint, Shader);
+void RenderOutline(GLuint, Shader);
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
@@ -157,74 +160,59 @@ int main(int argc, char** argv) {
 
 
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_STENCIL_TEST);
+	//glEnable(GL_STENCIL_TEST);
+	//glStencilFunc(GL_NOTEQUAL, 1, 0xff);
+	//glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+	//glStencilMask(0xff);
+
 	// main loop
 	//---------------------------------------------------------------
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
 		process_input(window);
 		
-		// Reset Stencil Test Option
-		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-		glStencilMask(0xFF);
-		glStencilFunc(GL_ALWAYS, 0, 0xFF);
-
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-
-		glm::mat4 model = glm::mat4(1.0f);
-		glm::mat4 view = camera.getView();
-		glm::mat4 projection = glm::perspective(glm::radians(camera.getFOV()), (static_cast<float>(SCR_WIDTH) / SCR_HEIGHT), 0.1f, 200.0f);
-
-		shader.use();
-		shader.setMat4("view", view);
-		shader.setMat4("projection", projection);
-		
-		shaderOutline.use();
-		shaderOutline.setMat4("view", view);
-		shaderOutline.setMat4("projection", projection);
-
 		// Render floor
-		glBindVertexArray(floor_array);
-		glBindTexture(GL_TEXTURE_2D, floor_texture);
-		shader.use();
-		shader.setMat4("model", model);
-		glDrawArrays(GL_TRIANGLES, 0, 6);
-		glBindVertexArray(0);
+		RenderOther(floor_array, floor_texture, shader);
 
-		// Render Cube
-		glBindVertexArray(cube_array);
-		glBindTexture(GL_TEXTURE_2D, cube_texture);
-		
-		// 1. Render Outline
-		shader.use();
+		// Render Cube		
+		// 1. Render Model
+
+		glEnable(GL_STENCIL_TEST);
 		glStencilFunc(GL_ALWAYS, 1, 0xff);
-		// glStencilMask(0xff);
-		shader.setMat4("model", glm::translate(model, glm::vec3(2.0f, 0.0f, 1.0f)));
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-		shader.setMat4("model", glm::translate(model, glm::vec3(-1.0f, 0.0f, 1.5f)));
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-		glStencilMask(0x00);
+		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+		RenderModel(cube_array, cube_texture, shader);
 
-		// 2. Render Texture
-		float scale = 1.05f;
-		shaderOutline.use();
+		//glStencilFunc(GL_ALWAYS, 1, 0xff);
+		//glStencilMask(0xff);
+		//RenderModel(cube_array, cube_texture, shader);
+		//glStencilFunc(GL_NOTEQUAL, 1, 0xff);
+
+		// 2. Render Outline
+		
+		glStencilMask(0x00);
 		glStencilFunc(GL_NOTEQUAL, 1, 0xff);
 		glDisable(GL_DEPTH_TEST);
-
-		glm::mat4 scale_matrix = glm::scale(glm::mat4(1.0f), glm::vec3(scale, scale, scale));
-		glm::mat4 translate1 = glm::translate(glm::mat4(1.0f), glm::vec3(2.0f, 0.0f, 1.0f));
-		glm::mat4 translate2 = glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, 0.0f, 1.5f));
-
-		glm::mat4 cube1 = translate1 * scale_matrix;
-		glm::mat4 cube2 = translate2 * scale_matrix;
-
-		shaderOutline.setMat4("model", cube1);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-		shaderOutline.setMat4("model", cube2);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
+		RenderOutline(cube_array, shaderOutline);
 		glEnable(GL_DEPTH_TEST);
-		glBindVertexArray(0);
+		glStencilMask(0xff);
+		glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+		glDisable(GL_STENCIL_TEST);
+
+
+
+
+
+		//glStencilFunc(GL_NOTEQUAL, 1, 0xff);
+		//glStencilMask(0x00);
+		//glDisable(GL_DEPTH_TEST);
+		//RenderOutline(cube_array, shaderOutline);
+		//glEnable(GL_DEPTH_TEST);
+		//glStencilMask(0xff);
+
+
+
 		
 		glfwSwapBuffers(window);
 	}
@@ -237,6 +225,61 @@ int main(int argc, char** argv) {
 	return 0;
 }
 
+void RenderOther(GLuint vao, GLuint texture, Shader shader) {
+	glm::mat4 model = glm::mat4(1.0f);
+	glm::mat4 view = camera.getView();
+	glm::mat4 projection = glm::perspective(glm::radians(camera.getFOV()), (static_cast<float>(SCR_WIDTH) / SCR_HEIGHT), 0.1f, 200.0f);
+
+	glBindVertexArray(vao);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	shader.use();
+	shader.setMat4("view", view);
+	shader.setMat4("projection", projection);
+	shader.use();
+	shader.setMat4("model", model);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+	glBindVertexArray(0);
+}
+
+void RenderModel(GLuint vao, GLuint texture, Shader shader) {
+	glm::mat4 model = glm::mat4(1.0f);
+	glm::mat4 view = camera.getView();
+	glm::mat4 projection = glm::perspective(glm::radians(camera.getFOV()), (static_cast<float>(SCR_WIDTH) / SCR_HEIGHT), 0.1f, 200.0f);
+
+	glBindVertexArray(vao);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	shader.use();
+	shader.setMat4("view", view);
+	shader.setMat4("projection", projection);
+
+	shader.setMat4("model", glm::translate(model, glm::vec3(2.0f, 0.0f, 1.0f)));
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+	shader.setMat4("model", glm::translate(model, glm::vec3(-1.0f, 0.0f, 1.5f)));
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+	glBindVertexArray(0);
+}
+
+void RenderOutline(GLuint vao, Shader shader) {
+	glm::mat4 view = camera.getView();
+	glm::mat4 projection = glm::perspective(glm::radians(camera.getFOV()), (static_cast<float>(SCR_WIDTH) / SCR_HEIGHT), 0.1f, 200.0f);
+	
+	float scale = 1.05f;
+	glm::mat4 scale_matrix = glm::scale(glm::mat4(1.0f), glm::vec3(scale, scale, scale));
+	glm::mat4 translate1 = glm::translate(glm::mat4(1.0f), glm::vec3(2.0f, 0.0f, 1.0f));
+	glm::mat4 translate2 = glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, 0.0f, 1.5f));
+
+	glm::mat4 cube1 = translate1 * scale_matrix;
+	glm::mat4 cube2 = translate2 * scale_matrix;
+	glBindVertexArray(vao);
+
+	shader.use();
+	shader.setMat4("view", view);
+	shader.setMat4("projection", projection); 
+	shader.setMat4("model", cube1);
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+	shader.setMat4("model", cube2);
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+}
 
 // framebuffer size callback function
 //---------------------------------------------------------------
