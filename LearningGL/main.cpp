@@ -150,46 +150,83 @@ int main(int argc, char** argv) {
 	GLuint cube_texture = load_texture("marble.jpg");
 	GLuint floor_texture = load_texture("floor.png");
 
-	Shader shader("depth.vert", "depth.frag");
+	Shader shader("scene.vert", "scene.frag");
 	shader.use();
 	shader.setInt("texture0", 0);
-	
+	Shader shaderOutline("scene.vert", "outline.frag");
+
+
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_STENCIL_TEST);
 	// main loop
 	//---------------------------------------------------------------
 	while (!glfwWindowShouldClose(window)) {
+		glfwPollEvents();
 		process_input(window);
+		
+		// Reset Stencil Test Option
+		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+		glStencilMask(0xFF);
+		glStencilFunc(GL_ALWAYS, 0, 0xFF);
 
-		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		shader.use();
-		glm::mat4 view = camera.getView();
-		glm::mat4 projection = glm::perspective(camera.getFOV(), (float)(SCR_WIDTH) / (float)(SCR_HEIGHT), 0.1f, 200.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 		glm::mat4 model = glm::mat4(1.0f);
-		glm::mat4 cube1 = model;  //glm::translate(model, glm::vec3(1.0f, 0.0f, 3.0f));
-		glm::mat4 cube2 = glm::translate(model, glm::vec3(2.0f, 0.0f, 1.0f));
-		
+		glm::mat4 view = camera.getView();
+		glm::mat4 projection = glm::perspective(glm::radians(camera.getFOV()), (static_cast<float>(SCR_WIDTH) / SCR_HEIGHT), 0.1f, 200.0f);
+
+		shader.use();
 		shader.setMat4("view", view);
 		shader.setMat4("projection", projection);
+		
+		shaderOutline.use();
+		shaderOutline.setMat4("view", view);
+		shaderOutline.setMat4("projection", projection);
 
+		// Render floor
 		glBindVertexArray(floor_array);
-		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, floor_texture);
+		shader.use();
 		shader.setMat4("model", model);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
+		glBindVertexArray(0);
 
+		// Render Cube
 		glBindVertexArray(cube_array);
-		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, cube_texture);
-		shader.setMat4("model", cube1);
+		
+		// 1. Render Outline
+		shader.use();
+		glStencilFunc(GL_ALWAYS, 1, 0xff);
+		// glStencilMask(0xff);
+		shader.setMat4("model", glm::translate(model, glm::vec3(2.0f, 0.0f, 1.0f)));
 		glDrawArrays(GL_TRIANGLES, 0, 36);
-		shader.setMat4("model", cube2);
+		shader.setMat4("model", glm::translate(model, glm::vec3(-1.0f, 0.0f, 1.5f)));
 		glDrawArrays(GL_TRIANGLES, 0, 36);
+		glStencilMask(0x00);
 
+		// 2. Render Texture
+		float scale = 1.05f;
+		shaderOutline.use();
+		glStencilFunc(GL_NOTEQUAL, 1, 0xff);
+		glDisable(GL_DEPTH_TEST);
+
+		glm::mat4 scale_matrix = glm::scale(glm::mat4(1.0f), glm::vec3(scale, scale, scale));
+		glm::mat4 translate1 = glm::translate(glm::mat4(1.0f), glm::vec3(2.0f, 0.0f, 1.0f));
+		glm::mat4 translate2 = glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, 0.0f, 1.5f));
+
+		glm::mat4 cube1 = translate1 * scale_matrix;
+		glm::mat4 cube2 = translate2 * scale_matrix;
+
+		shaderOutline.setMat4("model", cube1);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		shaderOutline.setMat4("model", cube2);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		glEnable(GL_DEPTH_TEST);
+		glBindVertexArray(0);
+		
 		glfwSwapBuffers(window);
-		glfwPollEvents();
 	}
 	
 	// waste disposal

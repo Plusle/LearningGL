@@ -1,20 +1,20 @@
 ﻿  main.cpp
-E:\code-gl\LearningGL\LearningGL\FPSCamera.h(61,24): warning C4244: 'initializing': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-E:\code-gl\LearningGL\LearningGL\FPSCamera.h(115,51): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
+E:\code-cpp\code-gl\LearningGL\LearningGL\FPSCamera.h(61,24): warning C4244: 'initializing': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+E:\code-cpp\code-gl\LearningGL\LearningGL\FPSCamera.h(115,51): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-E:\code-gl\LearningGL\LearningGL\FPSCamera.h(116,23): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
+E:\code-cpp\code-gl\LearningGL\LearningGL\FPSCamera.h(116,23): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-E:\code-gl\LearningGL\LearningGL\FPSCamera.h(117,51): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
+E:\code-cpp\code-gl\LearningGL\LearningGL\FPSCamera.h(117,51): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-E:\code-gl\LearningGL\LearningGL\main.cpp(18,24): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
-E:\code-gl\LearningGL\LearningGL\main.cpp(259,23): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
-  LearningGL.vcxproj -> E:\code-gl\LearningGL\x64\Debug\LearningGL.exe
+E:\code-cpp\code-gl\LearningGL\LearningGL\main.cpp(18,24): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
+E:\code-cpp\code-gl\LearningGL\LearningGL\main.cpp(278,23): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
+  LearningGL.vcxproj -> E:\code-cpp\code-gl\LearningGL\x64\Debug\LearningGL.exe

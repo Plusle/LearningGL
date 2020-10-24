@@ -157,8 +157,9 @@
     <ClInclude Include="Shader.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="depth.frag" />
-    <None Include="depth.vert" />
+    <None Include="outline.frag" />
+    <None Include="scene.frag" />
+    <None Include="scene.vert" />
     <None Include="style.md" />
   </ItemGroup>
   <ItemGroup>
