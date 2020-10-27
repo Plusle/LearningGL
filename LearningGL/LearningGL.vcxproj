@@ -123,6 +123,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -157,8 +158,9 @@
     <ClInclude Include="Shader.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="depth.frag" />
-    <None Include="depth.vert" />
+    <None Include="outline.frag" />
+    <None Include="scene.frag" />
+    <None Include="scene.vert" />
     <None Include="style.md" />
   </ItemGroup>
   <ItemGroup>

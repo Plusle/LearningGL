@@ -30,7 +30,6 @@ class Light {
 class ParallelLight : public Light {
 	public:
 		ParallelLight() = default;
-
 		
 	private:
 		glm::vec3 direction;

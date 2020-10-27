@@ -29,10 +29,13 @@
     <None Include="style.md">
       <Filter>源文件</Filter>
     </None>
-    <None Include="depth.frag">
+    <None Include="scene.frag">
       <Filter>源文件\shader</Filter>
     </None>
-    <None Include="depth.vert">
+    <None Include="scene.vert">
+      <Filter>源文件\shader</Filter>
+    </None>
+    <None Include="outline.frag">
       <Filter>源文件\shader</Filter>
     </None>
   </ItemGroup>

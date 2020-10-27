@@ -1,5 +1,5 @@
-/Debug/
-/LearningGL/Debug/
-/.vs/
-/x64/
-/Learning/x64/
+/Debug/*
+/LearningGL/Debug/*
+/.vs/*
+/x64/*
+/Learning/x64/*
