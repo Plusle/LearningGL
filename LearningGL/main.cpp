@@ -12,6 +12,8 @@
 
 
 #include <iostream>
+#include <vector>
+#include <algorithm>
 
 const GLuint SCR_WIDTH = 800;
 const GLuint SCR_HEIGHT = 600;
@@ -27,14 +29,26 @@ bool firstTimeFocus = true;
 
 FPSCamera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 
-void RenderOther(GLuint, GLuint, Shader);
-void RenderModel(GLuint, GLuint, Shader);
-void RenderOutline(GLuint, Shader);
+typedef struct {
+	GLuint vbo;
+	GLuint vao;
+	GLuint texture;
+} VertexObject;
+
+typedef struct {
+	glm::mat4 model;
+	glm::mat4 view;
+	glm::mat4 projection;
+} Transform;
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void process_input(GLFWwindow* window);
-GLuint load_texture(char const* path);
+GLuint load_texture(char const* path, bool discard);
+void Render(VertexObject vo, Shader shader, Transform tsfm, int num_of_vertices);
+void RenderOutline(GLuint vao, Shader shader);	// deprecated
+VertexObject get_buffer_array_texture(float* data, int length, const char* tex, bool discard);
 
 int main(int argc, char** argv) {
 
@@ -117,6 +131,7 @@ int main(int argc, char** argv) {
 		-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
 		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 	};
+	
 	float planeVertices[] = {
 		// positions          // texture Coords (note we set these higher than 1 (together with GL_REPEAT as texture wrapping mode). this will cause the floor texture to repeat)
 		 5.0f, -0.5f,  5.0f,  2.0f, 0.0f,
@@ -128,134 +143,110 @@ int main(int argc, char** argv) {
 		 5.0f, -0.5f, -5.0f,  2.0f, 2.0f
 	};
 
-	GLuint cube_buffer, cube_array;
-	glGenBuffers(1, &cube_buffer);
-	glGenVertexArrays(1, &cube_array);
-	glBindVertexArray(cube_array);
-	glBindBuffer(GL_ARRAY_BUFFER, cube_buffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), cubeVertices, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void*)0);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void*)(3 * sizeof(float)));
+	float grassVertices[] = {
+		0.0f,  0.5f,  0.0f,  0.0f,  0.0f,
+		0.0f, -0.5f,  0.0f,  0.0f,  1.0f,
+		1.0f, -0.5f,  0.0f,  1.0f,  1.0f,
 
-	GLuint floor_buffer, floor_array;
-	glGenBuffers(1, &floor_buffer);
-	glGenVertexArrays(1, &floor_array);
-	glBindVertexArray(floor_array);
-	glBindBuffer(GL_ARRAY_BUFFER, floor_buffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(planeVertices), planeVertices, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void*)0);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void*)(3 * sizeof(float)));
+		0.0f,  0.5f,  0.0f,  0.0f,  0.0f,
+		1.0f, -0.5f,  0.0f,  1.0f,  1.0f,
+		1.0f,  0.5f,  0.0f,  1.0f,  0.0f
+	};
 
-	GLuint cube_texture = load_texture("marble.jpg");
-	GLuint floor_texture = load_texture("floor.png");
+	VertexObject cube = get_buffer_array_texture(cubeVertices, sizeof(cubeVertices) / sizeof(float), "marble.jpg", false);
+	VertexObject floor = get_buffer_array_texture(planeVertices, sizeof(planeVertices) / sizeof(float), "floor.png", false);
+	VertexObject grass = get_buffer_array_texture(grassVertices, sizeof(grassVertices) / sizeof(float), "grass.png", true);
+	VertexObject glass = get_buffer_array_texture(grassVertices, sizeof(grassVertices) / sizeof(float), "transparent-glass.png", false);
 
 	Shader shader("scene.vert", "scene.frag");
-	shader.use();
-	shader.setInt("texture0", 0);
-	Shader shaderOutline("scene.vert", "outline.frag");
-
+	
+	std::vector<glm::vec3> vegetation = {
+		glm::vec3(-1.5f, 0.0f, -0.48f),
+		glm::vec3(1.5f, 0.0f, 0.51f),
+		glm::vec3(0.0f, 0.0f, 0.7f),
+		glm::vec3(-0.3f, 0.0f, -2.3f),
+		glm::vec3(0.5f, 0.0f, -0.6f)
+	};
+	// std::sort(vegetation.begin(), vegetation.end(), [](const glm::vec3& a, const glm::vec3& b) { return a.z < b.z; });
 
 	glEnable(GL_DEPTH_TEST);
-	//glEnable(GL_STENCIL_TEST);
-	//glStencilFunc(GL_NOTEQUAL, 1, 0xff);
-	//glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-	//glStencilMask(0xff);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// main loop
 	//---------------------------------------------------------------
 	while (!glfwWindowShouldClose(window)) {
-		glfwPollEvents();
 		process_input(window);
 		
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+		Transform tsfm = {
+			glm::mat4(1.0f),
+			camera.getView(),
+			glm::perspective(glm::radians(camera.getFOV()), (static_cast<float>(SCR_WIDTH) / SCR_HEIGHT), 0.1f, 200.0f)
+		};
+
+		if (glm::dot(camera.getDirection(), glm::vec3(0.0f, 0.0f, -1.0f)) > 0) {
+			std::sort(vegetation.begin(), vegetation.end(), [](const glm::vec3& a, const glm::vec3& b) { return a.z < b.z; });
+		} else {
+			std::sort(vegetation.begin(), vegetation.end(), [](const glm::vec3& a, const glm::vec3& b) { return a.z > b.z; });
+		}
+
 		// Render floor
-		RenderOther(floor_array, floor_texture, shader);
+		Render(floor, shader, tsfm, 6);
 
-		// Render Cube		
-		// 1. Render Model
+		// Render cube
+		tsfm.model = glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, 0.0f, -1.0f));
+		Render(cube, shader, tsfm, 36);
+		tsfm.model = glm::translate(glm::mat4(1.0f), glm::vec3(2.0f, 0.0f, 0.0f));
+		Render(cube, shader, tsfm, 36);
 
-		glEnable(GL_STENCIL_TEST);
-		glStencilFunc(GL_ALWAYS, 1, 0xff);
-		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-		RenderModel(cube_array, cube_texture, shader);
+		// Render grass
+		for (const glm::vec3& position : vegetation) {
+			tsfm.model = glm::translate(glm::mat4(1.0f), position);
+			Render(grass, shader, tsfm, 6);
+		}
 
-		//glStencilFunc(GL_ALWAYS, 1, 0xff);
-		//glStencilMask(0xff);
-		//RenderModel(cube_array, cube_texture, shader);
-		//glStencilFunc(GL_NOTEQUAL, 1, 0xff);
+		// Render glass
+		for (const glm::vec3& position : vegetation) {
+			tsfm.model = glm::translate(glm::mat4(1.0f), position);
+			Render(glass, shader, tsfm, 6);
+		}
 
-		// 2. Render Outline
-		
-		glStencilMask(0x00);
-		glStencilFunc(GL_NOTEQUAL, 1, 0xff);
-		glDisable(GL_DEPTH_TEST);
-		RenderOutline(cube_array, shaderOutline);
-		glEnable(GL_DEPTH_TEST);
-		glStencilMask(0xff);
-		glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
-		glDisable(GL_STENCIL_TEST);
-
-
-
-
-
-		//glStencilFunc(GL_NOTEQUAL, 1, 0xff);
-		//glStencilMask(0x00);
-		//glDisable(GL_DEPTH_TEST);
-		//RenderOutline(cube_array, shaderOutline);
-		//glEnable(GL_DEPTH_TEST);
-		//glStencilMask(0xff);
-
-
-
-		
 		glfwSwapBuffers(window);
+		glfwPollEvents();
 	}
 	
-	// waste disposal
-	//---------------------------------------------------------------
-
-
+	glfwDestroyWindow(window);
 	glfwTerminate();
 	return 0;
 }
 
-void RenderOther(GLuint vao, GLuint texture, Shader shader) {
-	glm::mat4 model = glm::mat4(1.0f);
-	glm::mat4 view = camera.getView();
-	glm::mat4 projection = glm::perspective(glm::radians(camera.getFOV()), (static_cast<float>(SCR_WIDTH) / SCR_HEIGHT), 0.1f, 200.0f);
-
+VertexObject get_buffer_array_texture(float* data, int length, const char* tex, bool discard) {
+	GLuint vbo, vao, texture;
+	texture = load_texture(tex, discard);
+	glGenBuffers(1, &vbo);
+	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	shader.use();
-	shader.setMat4("view", view);
-	shader.setMat4("projection", projection);
-	shader.use();
-	shader.setMat4("model", model);
-	glDrawArrays(GL_TRIANGLES, 0, 6);
-	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * length, data, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void*)0);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void*)(3 * sizeof(float)));
+
+	return { vbo, vao, texture };
 }
 
-void RenderModel(GLuint vao, GLuint texture, Shader shader) {
-	glm::mat4 model = glm::mat4(1.0f);
-	glm::mat4 view = camera.getView();
-	glm::mat4 projection = glm::perspective(glm::radians(camera.getFOV()), (static_cast<float>(SCR_WIDTH) / SCR_HEIGHT), 0.1f, 200.0f);
-
-	glBindVertexArray(vao);
-	glBindTexture(GL_TEXTURE_2D, texture);
+void Render(VertexObject vo, Shader shader, Transform tsfm, int num_of_vertices) {
+	glBindVertexArray(vo.vao);
+	glBindTexture(GL_TEXTURE_2D, vo.texture);
 	shader.use();
-	shader.setMat4("view", view);
-	shader.setMat4("projection", projection);
-
-	shader.setMat4("model", glm::translate(model, glm::vec3(2.0f, 0.0f, 1.0f)));
-	glDrawArrays(GL_TRIANGLES, 0, 36);
-	shader.setMat4("model", glm::translate(model, glm::vec3(-1.0f, 0.0f, 1.5f)));
-	glDrawArrays(GL_TRIANGLES, 0, 36);
+	shader.setMat4("model", tsfm.model);
+	shader.setMat4("view", tsfm.view);
+	shader.setMat4("projection", tsfm.projection);
+	glDrawArrays(GL_TRIANGLES, 0, num_of_vertices);
 	glBindVertexArray(0);
 }
 
@@ -335,8 +326,7 @@ void process_input(GLFWwindow* w) {
 
 // function for loading texture temporarily 
 //---------------------------------------------------------------
-GLuint load_texture(char const* path)
-{
+GLuint load_texture(char const* path, bool discard) {
 	GLuint textureID;
 	glGenTextures(1, &textureID);
 
@@ -356,8 +346,14 @@ GLuint load_texture(char const* path)
 		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		if (discard) {
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		} else {
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		}
+
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
