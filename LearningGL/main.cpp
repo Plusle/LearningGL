@@ -88,48 +88,48 @@ int main(int argc, char** argv) {
 
 	// vertrices
 	float cubeVertices[] = {
-		// positions          // texture Coords
-		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-		 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-
-		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+		// back face
+		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f, // bottom-left
+		 0.5f, -0.5f, -0.5f,  1.0f, 0.0f, // bottom-right    
+		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f, // top-right              
+		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f, // top-right
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f, // top-left
+		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f, // bottom-left                
+		// front face
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f, // bottom-left
+		 0.5f,  0.5f,  0.5f,  1.0f, 1.0f, // top-right
+		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f, // bottom-right        
+		 0.5f,  0.5f,  0.5f,  1.0f, 1.0f, // top-right
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f, // bottom-left
+		-0.5f,  0.5f,  0.5f,  0.0f, 1.0f, // top-left        
+		// left face
+		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // top-right
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // bottom-left
+		-0.5f,  0.5f, -0.5f,  1.0f, 1.0f, // top-left       
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // bottom-left
+		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // top-right
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f, // bottom-right
+		// right face
+		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // top-left
+		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f, // top-right      
+		 0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // bottom-right          
+		 0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // bottom-right
+		 0.5f, -0.5f,  0.5f,  0.0f, 0.0f, // bottom-left
+		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // top-left
+		// bottom face          
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // top-right
+		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f, // bottom-left
+		 0.5f, -0.5f, -0.5f,  1.0f, 1.0f, // top-left        
+		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f, // bottom-left
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // top-right
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f, // bottom-right
+		// top face
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f, // top-left
+		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f, // top-right
+		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // bottom-right                 
+		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // bottom-right
+		-0.5f,  0.5f,  0.5f,  0.0f, 0.0f, // bottom-left  
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f  // top-left              
 	};
 	
 	float planeVertices[] = {
@@ -153,12 +153,82 @@ int main(int argc, char** argv) {
 		1.0f,  0.5f,  0.0f,  1.0f,  0.0f
 	};
 
+	float quadVertices[] = { // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
+		// positions   // texCoords
+		-1.0f,  1.0f,  0.0f, 1.0f,
+		-1.0f, -1.0f,  0.0f, 0.0f,
+		 1.0f, -1.0f,  1.0f, 0.0f,
+
+		-1.0f,  1.0f,  0.0f, 1.0f,
+		 1.0f, -1.0f,  1.0f, 0.0f,
+		 1.0f,  1.0f,  1.0f, 1.0f
+	};
+
+	float subVertices[] = { // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
+		// positions   // texCoords
+		0.9f, 0.9f,  1.0f, 1.0f,
+		0.5f, 0.9f,  0.0f, 1.0f,
+		0.5f, 0.5f,  0.0f, 0.0f,
+
+		0.5f, 0.5f,  0.0f, 0.0f,
+		0.9f, 0.5f,  1.0f, 0.0f,
+		0.9f, 0.9f,  1.0f, 1.0f
+	};
+
 	VertexObject cube = get_buffer_array_texture(cubeVertices, sizeof(cubeVertices) / sizeof(float), "marble.jpg", false);
 	VertexObject floor = get_buffer_array_texture(planeVertices, sizeof(planeVertices) / sizeof(float), "floor.png", false);
 	VertexObject grass = get_buffer_array_texture(grassVertices, sizeof(grassVertices) / sizeof(float), "grass.png", true);
 	VertexObject glass = get_buffer_array_texture(grassVertices, sizeof(grassVertices) / sizeof(float), "transparent-glass.png", false);
+	
 
-	Shader shader("scene.vert", "scene.frag");
+	GLuint quadVAO, quadVBO;
+	glGenBuffers(1, &quadVBO);
+	glGenVertexArrays(1, &quadVAO);
+	glBindVertexArray(quadVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), quadVertices, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 4, (void*)0);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 4, (void*)(sizeof(float) * 2));
+	glBindVertexArray(0);
+
+	GLuint subVAO, subVBO;
+	glGenBuffers(1, &subVBO);
+	glGenVertexArrays(1, &subVAO);
+	glBindVertexArray(subVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, subVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(subVertices), subVertices, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 4, (void*)0);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 4, (void*)(sizeof(float) * 2));
+	glBindVertexArray(0);
+
+
+	GLuint fbo;
+	glGenFramebuffers(1, &fbo);
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+
+	GLuint texFramebuffer;
+	glGenTextures(1, &texFramebuffer);
+	glBindTexture(GL_TEXTURE_2D, texFramebuffer);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, SCR_WIDTH, SCR_HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texFramebuffer, 0);
+
+	GLuint rbo;
+	glGenRenderbuffers(1, &rbo);
+	glBindRenderbuffer(GL_RENDERBUFFER, rbo);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, SCR_WIDTH, SCR_HEIGHT);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
+
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+		std::cerr << "Framebuffer is not complete." << std::endl;
+	}
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	
 	std::vector<glm::vec3> vegetation = {
 		glm::vec3(-1.5f, 0.0f, -0.48f),
@@ -167,19 +237,19 @@ int main(int argc, char** argv) {
 		glm::vec3(-0.3f, 0.0f, -2.3f),
 		glm::vec3(0.5f, 0.0f, -0.6f)
 	};
-	// std::sort(vegetation.begin(), vegetation.end(), [](const glm::vec3& a, const glm::vec3& b) { return a.z < b.z; });
 
-	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	// glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+	Shader shader("scene.vert", "scene.frag");
+	Shader scene("postprocess.vert", "postprocess.frag");
+	Shader sub_scene("postprocess.vert", "subscene.frag");
 
 	// main loop
 	//---------------------------------------------------------------
 	while (!glfwWindowShouldClose(window)) {
 		process_input(window);
-		
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 		Transform tsfm = {
 			glm::mat4(1.0f),
@@ -193,6 +263,11 @@ int main(int argc, char** argv) {
 			std::sort(vegetation.begin(), vegetation.end(), [](const glm::vec3& a, const glm::vec3& b) { return a.z > b.z; });
 		}
 
+		glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+		glEnable(GL_DEPTH_TEST);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 		// Render floor
 		Render(floor, shader, tsfm, 6);
 
@@ -202,17 +277,32 @@ int main(int argc, char** argv) {
 		tsfm.model = glm::translate(glm::mat4(1.0f), glm::vec3(2.0f, 0.0f, 0.0f));
 		Render(cube, shader, tsfm, 36);
 
-		// Render grass
-		for (const glm::vec3& position : vegetation) {
-			tsfm.model = glm::translate(glm::mat4(1.0f), position);
-			Render(grass, shader, tsfm, 6);
-		}
+		//// Render grass
+		// for (const glm::vec3& position : vegetation) {
+		// 	 tsfm.model = glm::translate(glm::mat4(1.0f), position);
+		// 	 Render(grass, shader, tsfm, 6);
+		// }
 
-		// Render glass
-		for (const glm::vec3& position : vegetation) {
-			tsfm.model = glm::translate(glm::mat4(1.0f), position);
-			Render(glass, shader, tsfm, 6);
-		}
+		//// Render glass
+		// for (const glm::vec3& position : vegetation) {
+		//	 tsfm.model = glm::translate(glm::mat4(1.0f), position);
+		//	 Render(glass, shader, tsfm, 6);
+		// }
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glDisable(GL_DEPTH_TEST);
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		scene.use();
+		glBindVertexArray(quadVAO);
+		glBindTexture(GL_TEXTURE_2D, texFramebuffer);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+
+		sub_scene.use();
+		glBindVertexArray(subVAO);
+		glBindTexture(GL_TEXTURE_2D, texFramebuffer);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
@@ -224,8 +314,8 @@ int main(int argc, char** argv) {
 }
 
 VertexObject get_buffer_array_texture(float* data, int length, const char* tex, bool discard) {
-	GLuint vbo, vao, texture;
-	texture = load_texture(tex, discard);
+	GLuint vbo, vao, texture = 0;
+	if (tex) texture = load_texture(tex, discard);
 	glGenBuffers(1, &vbo);
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);

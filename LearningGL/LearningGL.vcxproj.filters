@@ -38,6 +38,15 @@
     <None Include="outline.frag">
       <Filter>源文件\shader</Filter>
     </None>
+    <None Include="postprocess.frag">
+      <Filter>源文件\shader</Filter>
+    </None>
+    <None Include="postprocess.vert">
+      <Filter>源文件\shader</Filter>
+    </None>
+    <None Include="subscene.frag">
+      <Filter>源文件\shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shader.h">

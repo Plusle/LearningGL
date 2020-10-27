@@ -12,5 +12,8 @@ void main() {
     if (texColor.a < 0.1) {
         discard;
     }
+    // float average = (texColor.r + texColor.g + texColor.b) / 3;
+    // FragColor = vec4(average, average, average, texColor.a);
+
     FragColor = texColor;
 }

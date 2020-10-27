@@ -162,6 +162,9 @@
     <None Include="scene.frag" />
     <None Include="scene.vert" />
     <None Include="style.md" />
+    <None Include="postprocess.frag" />
+    <None Include="postprocess.vert" />
+    <None Include="subscene.frag" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="awesomeface.png" />

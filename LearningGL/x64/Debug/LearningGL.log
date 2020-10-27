@@ -16,6 +16,5 @@ E:\code-cpp\code-gl\LearningGL\LearningGL\FPSCamera.h(117,51): warning C4244: '=
               T=float
           ]
 E:\code-cpp\code-gl\LearningGL\LearningGL\main.cpp(20,24): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
-E:\code-cpp\code-gl\LearningGL\LearningGL\main.cpp(312,23): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
-LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+E:\code-cpp\code-gl\LearningGL\LearningGL\main.cpp(402,23): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
   LearningGL.vcxproj -> E:\code-cpp\code-gl\LearningGL\x64\Debug\LearningGL.exe
